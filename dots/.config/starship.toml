@@ -84,7 +84,7 @@ show_always = true
 home_symbol = " "
 read_only = "  "
 style = "bg:255 fg:240"
-truncation_length = 2
+truncation_length = 6
 truncation_symbol = ".../"
 format = '[](bold fg:255)[󰉋 → $path]($style)[](bold fg:255)'
 
