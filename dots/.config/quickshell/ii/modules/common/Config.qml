@@ -244,9 +244,63 @@ Singleton {
                 property JsonObject resources: JsonObject {
                     property bool alwaysShowSwap: true
                     property bool alwaysShowCpu: true
+                    property bool alwaysShowGpu: true
+                    property int gpuLayout: 0 // -1: Disable GPU Querries | 0: dGPU | 1: iGPU | 2: Hybrid
+
+                    property JsonObject gpu: JsonObject {
+                      // Manual card override (e.g., "card1" for AMD_GPU_CARD/INTEL_GPU_CARD)
+                      property string dgpuCard: ""
+                      property string igpuCard: ""
+
+                      // Manual GPU name override (if empty, uses detected name)
+                      property string dgpuName: ""
+                      property string igpuName: ""
+
+                      // Overlay widget GPU display settings
+                      property JsonObject overlay: JsonObject {
+                        property bool showDGpu: true
+                        property bool showIGpu: true
+
+                        property JsonObject dGpu: JsonObject {
+                          property bool showUsage: true
+                          property bool showVram: true
+                          property bool showTemp: true
+                          property bool showTempJunction: false  // AMD only
+                          property bool showTempMem: false       // AMD only
+                          property bool showFan: true
+                          property bool showPower: true
+                        }
+
+                        property JsonObject iGpu: JsonObject {
+                        property bool showUsage: true
+                        property bool showVram: true
+                        property bool showTemp: true
+                      }
+                    }
+
+                    // Bar popup GPU settings
+                    property JsonObject bar: JsonObject {
+                        property bool showDGpu: true
+                        property bool showIGpu: true
+
+                        property JsonObject dGpu: JsonObject {
+                            property bool showUsage: true
+                            property bool showVram: true
+                            property bool showTemp: true
+                        }
+
+                        property JsonObject iGpu: JsonObject {
+                            property bool showUsage: true
+                            property bool showVram: true
+                            property bool showTemp: true
+                        }
+                    }
+                    }
+
                     property int memoryWarningThreshold: 95
                     property int swapWarningThreshold: 85
                     property int cpuWarningThreshold: 90
+                    property int gpuWArningThreshold: 90
                 }
                 property list<string> screenList: [] // List of names, like "eDP-1", find out with 'hyprctl monitors' command
                 property JsonObject utilButtons: JsonObject {
@@ -257,6 +311,7 @@ Singleton {
                     property bool showDarkModeToggle: true
                     property bool showPerformanceProfileToggle: false
                     property bool showScreenRecord: false
+                    property bool showIdleStatus: true
                 }
                 property JsonObject workspaces: JsonObject {
                     property bool monochromeIcons: true
@@ -459,6 +514,56 @@ Singleton {
             property JsonObject resources: JsonObject {
                 property int updateInterval: 3000
                 property int historyLength: 60
+
+                property JsonObject gpu: JsonObject {
+                    // Manual card override (e.g., "card1" for AMD_GPU_CARD/INTEL_GPU_CARD)
+                    property string dgpuCard: ""
+                    property string igpuCard: ""
+
+                    // Manual GPU name override (if empty, uses detected name)
+                    property string dgpuName: ""
+                    property string igpuName: ""
+
+                    // Overlay widget GPU display settings
+                    property JsonObject overlay: JsonObject {
+                        property bool showDGpu: true
+                        property bool showIGpu: true
+
+                        property JsonObject dGpu: JsonObject {
+                            property bool showUsage: true
+                            property bool showVram: true
+                            property bool showTemp: true
+                            property bool showTempJunction: false  // AMD only
+                            property bool showTempMem: false       // AMD only
+                            property bool showFan: true
+                            property bool showPower: true
+                        }
+
+                        property JsonObject iGpu: JsonObject {
+                            property bool showUsage: true
+                            property bool showVram: true
+                            property bool showTemp: true
+                        }
+                    }
+
+                    // Bar popup GPU settings
+                    property JsonObject bar: JsonObject {
+                        property bool showDGpu: true
+                        property bool showIGpu: true
+
+                        property JsonObject dGpu: JsonObject {
+                            property bool showUsage: true
+                            property bool showVram: true
+                            property bool showTemp: true
+                        }
+
+                        property JsonObject iGpu: JsonObject {
+                            property bool showUsage: true
+                            property bool showVram: true
+                            property bool showTemp: true
+                        }
+                    }
+                }
             }
 
             property JsonObject tray: JsonObject {

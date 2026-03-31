@@ -5,6 +5,7 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Hyprland
+import Quickshell.Wayland
 import Quickshell.Services.Pipewire
 import Quickshell.Services.UPower
 
@@ -120,6 +121,36 @@ Item {
                     color: Appearance.colors.colOnLayer2
                 }
             }
+        }
+
+        Loader {
+          active: Config.options.bar.utilButtons.showIdleStatus
+          visible: Config.options.bar.utilButtons.showIdleStatus
+
+          IdleInhibitor {
+            id: inhibitor
+            // Associate this with your bar's window so the compositor respects it
+            window: Quickshell.window 
+            enabled: false // Start allowed to sleep
+          }
+
+          IdleMonitor {
+            id: monitor
+            timeout: 0 // Immediate check
+            respectInhibitors: true // Important: reflects if an app is blocking sleep
+          }
+
+          sourceComponent: CircleUtilButton {
+            Layout.alignment: Qt.AlignVCenter
+            onClicked: inhibitor.enabled = !inhibitor.enabled
+            MaterialSymbol {
+              horizontalAlignment: Qt.AlignHCenter
+              fill: 0
+              text: monitor.isIdle ? "nights_stay" : "visibility"               
+              iconSize: Appearance.font.pixelSize.large
+              color: Appearance.colors.colOnLayer2
+            }
+          }
         }
 
         Loader {
