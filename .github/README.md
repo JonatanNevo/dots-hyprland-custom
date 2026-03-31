@@ -2,7 +2,8 @@
 a customization of end_4's hyprland dotfiles
 
 ## Changes
-* add add_vulkan_sdk to fish config
+* added add_vulkan_sdk to fish config
+* added fastfetch
 
 <div align="center">
     <h1>【 end_4's Hyprland dotfiles 】</h1>
