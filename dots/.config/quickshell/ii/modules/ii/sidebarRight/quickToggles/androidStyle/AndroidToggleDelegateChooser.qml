@@ -17,6 +17,7 @@ DelegateChooser {
     signal openAudioOutputDialog()
     signal openAudioInputDialog()
     signal openBluetoothDialog()
+    signal openEasyEffectsDialog()
     signal openNightLightDialog()
     signal openWifiDialog()
 
@@ -120,6 +121,9 @@ DelegateChooser {
         baseCellHeight: root.baseCellHeight
         cellSpacing: root.spacing
         cellSize: modelData.size
+        onOpenMenu: {
+            root.openEasyEffectsDialog()
+        }
     } }
 
     DelegateChoice { roleValue: "gameMode"; AndroidGameModeToggle {

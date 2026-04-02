@@ -33,7 +33,11 @@ AbstractQuickPanel {
         NightLight {}
         GameMode {}
         IdleInhibitor {}
-        EasyEffectsToggle {}
+        EasyEffectsToggle {
+            altAction: () => {
+                root.openEasyEffectsDialog();
+            }
+        }
         CloudflareWarp {}
     }
 }

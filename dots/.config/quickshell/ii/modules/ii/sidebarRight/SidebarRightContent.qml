@@ -13,6 +13,7 @@ import qs.modules.ii.sidebarRight.quickToggles
 import qs.modules.ii.sidebarRight.quickToggles.classicStyle
 
 import qs.modules.ii.sidebarRight.bluetoothDevices
+import qs.modules.ii.sidebarRight.easyEffectsPresets
 import qs.modules.ii.sidebarRight.nightLight
 import qs.modules.ii.sidebarRight.volumeMixer
 import qs.modules.ii.sidebarRight.wifiNetworks
@@ -25,6 +26,7 @@ Item {
     property bool showAudioOutputDialog: false
     property bool showAudioInputDialog: false
     property bool showBluetoothDialog: false
+    property bool showEasyEffectsDialog: false
     property bool showNightLightDialog: false
     property bool showWifiDialog: false
     property bool editMode: false
@@ -35,6 +37,7 @@ Item {
             if (!GlobalStates.sidebarRightOpen) {
                 root.showWifiDialog = false;
                 root.showBluetoothDialog = false;
+                root.showEasyEffectsDialog = false;
                 root.showAudioOutputDialog = false;
                 root.showAudioInputDialog = false;
             }
@@ -139,6 +142,16 @@ Item {
     }
 
     ToggleDialog {
+        shownPropertyString: "showEasyEffectsDialog"
+        dialog: EasyEffectsDialog {}
+        onShownChanged: {
+            if (!shown) return;
+            EasyEffects.fetchPresets();
+            EasyEffects.fetchCurrentPreset();
+        }
+    }
+
+    ToggleDialog {
         shownPropertyString: "showNightLightDialog"
         dialog: NightLightDialog {}
     }
@@ -197,6 +210,9 @@ Item {
             }
             function onOpenBluetoothDialog() {
                 root.showBluetoothDialog = true;
+            }
+            function onOpenEasyEffectsDialog() {
+                root.showEasyEffectsDialog = true;
             }
             function onOpenNightLightDialog() {
                 root.showNightLightDialog = true;

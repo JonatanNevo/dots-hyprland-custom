@@ -10,6 +10,7 @@ Rectangle {
     signal openAudioOutputDialog()
     signal openAudioInputDialog()
     signal openBluetoothDialog()
+    signal openEasyEffectsDialog()
     signal openNightLightDialog()
     signal openWifiDialog()
 }

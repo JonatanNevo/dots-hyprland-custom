@@ -25,6 +25,7 @@ Singleton {
     }
 
     function logout() {
+        Quickshell.execDetached(["hyprsession", "save"])
         closeAllWindows();
         Quickshell.execDetached(["pkill", "-i", "Hyprland"]);
     }

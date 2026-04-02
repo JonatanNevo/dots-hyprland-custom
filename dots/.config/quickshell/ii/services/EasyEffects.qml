@@ -14,6 +14,8 @@ Singleton {
 
     property bool available: false
     property bool active: false
+    property string currentPreset: ""
+    property list<string> presets: []
 
     function fetchAvailability() {
         fetchAvailabilityProc.running = true
@@ -21,6 +23,20 @@ Singleton {
 
     function fetchActiveState() {
         fetchActiveStateProc.running = true
+    }
+
+    function fetchPresets() {
+        root.presets = []
+        fetchPresetsProc.running = true
+    }
+
+    function fetchCurrentPreset() {
+        fetchCurrentPresetProc.running = true
+    }
+
+    function loadPreset(presetName) {
+        root.currentPreset = presetName
+        Quickshell.execDetached(["bash", "-c", `easyeffects -l '${presetName}' || flatpak run com.github.wwmm.easyeffects -l '${presetName}'`])
     }
 
     function disable() {
@@ -56,6 +72,31 @@ Singleton {
         command: ["bash", "-c", "pidof easyeffects || flatpak ps | grep com.github.wwmm.easyeffects > /dev/null 2>&1"]
         onExited: (exitCode, exitStatus) => {
             root.active = exitCode === 0
+        }
+    }
+
+    Process {
+        id: fetchPresetsProc
+        running: true
+        command: ["bash", "-c", "easyeffects -p 2>/dev/null | awk '/^Output presets:/{f=1;next} /^$/{f=0} f{sub(/^[0-9]+\\t/,\"\");print}'"]
+        stdout: SplitParser {
+            onRead: data => {
+                root.presets.push(data.trim())
+            }
+        }
+        onExited: (exitCode, exitStatus) => {
+            if (exitCode !== 0) root.presets = []
+        }
+    }
+
+    Process {
+        id: fetchCurrentPresetProc
+        running: true
+        command: ["bash", "-c", "easyeffects -s 2>/dev/null | grep '^output:' | sed 's/^output: //'"]
+        stdout: SplitParser {
+            onRead: data => {
+                root.currentPreset = data.trim()
+            }
         }
     }
 }

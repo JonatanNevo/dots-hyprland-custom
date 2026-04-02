@@ -11,7 +11,9 @@ QuickToggleModel {
 
     available: EasyEffects.available
     toggled: EasyEffects.active
+    hasMenu: true
     icon: "graphic_eq"
+    statusText: EasyEffects.currentPreset || (toggled ? Translation.tr("Active") : Translation.tr("Inactive"))
 
     Component.onCompleted: {
         EasyEffects.fetchActiveState()
@@ -21,10 +23,5 @@ QuickToggleModel {
         EasyEffects.toggle()
     }
 
-    altAction: () => {
-        Quickshell.execDetached(["bash", "-c", "flatpak run com.github.wwmm.easyeffects || easyeffects"])
-        GlobalStates.sidebarRightOpen = false
-    }
-
-    tooltipText: Translation.tr("EasyEffects | Right-click to configure")
+    tooltipText: Translation.tr("EasyEffects | Right-click for presets")
 }
