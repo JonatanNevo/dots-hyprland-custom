@@ -15,7 +15,8 @@ Singleton {
     property bool available: false
     property alias checking: checkUpdatesProc.running
     property int count: 0
-    
+    property string severity: "green" // "green", "yellow", "red"
+
     readonly property bool updateAdvised: available && count > Config.options.updates.adviseUpdateThreshold
     readonly property bool updateStronglyAdvised: available && count > Config.options.updates.stronglyAdviseUpdateThreshold
 
@@ -39,7 +40,7 @@ Singleton {
     Process {
         id: checkAvailabilityProc
         running: Config.ready && Config.options.updates.enableCheck
-        command: ["which", "checkupdates"]
+        command: ["which", "pacman"]
         onExited: (exitCode, exitStatus) => {
             root.available = (exitCode === 0);
             root.refresh();
@@ -48,10 +49,12 @@ Singleton {
 
     Process {
         id: checkUpdatesProc
-        command: ["bash", "-c", "checkupdates | wc -l"]
+        command: ["bash", "-c", "~/.config/custom/scripts/updates/check-system-updates.sh"]
         stdout: StdioCollector {
             onStreamFinished: {
-                root.count = parseInt(text.trim());
+                const parts = text.trim().split(" ");
+                root.count = parseInt(parts[0]) || 0;
+                root.severity = parts[1] || "green";
             }
         }
     }
