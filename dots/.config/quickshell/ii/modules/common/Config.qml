@@ -312,7 +312,6 @@ Singleton {
                     property bool showPerformanceProfileToggle: false
                     property bool showScreenRecord: false
                     property bool showIdleStatus: true
-                    property bool showPackages: true
                 }
                 property JsonObject workspaces: JsonObject {
                     property bool monochromeIcons: true

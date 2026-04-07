@@ -259,6 +259,20 @@ Item { // Bar content region
                     spacing: 0
 
                     Revealer {
+                        reveal: Updates.count > 0
+                        Layout.fillHeight: true
+                        Layout.rightMargin: reveal ? indicatorsRowLayout.realSpacing : 0
+                        implicitHeight: reveal ? updatablePackagesCount.implicitHeight : 0
+                        implicitWidth: reveal ? updatablePackagesCount.implicitWidth : 0
+                        Behavior on Layout.rightMargin {
+                            animation: Appearance.animation.elementMoveFast.numberAnimation.createObject(this)
+                        }
+                        UpdatablePackagesCount {
+                            id: updatablePackagesCount
+                        }
+                    }
+
+                    Revealer {
                         reveal: Audio.sink?.audio?.muted ?? false
                         Layout.fillHeight: true
                         Layout.rightMargin: reveal ? indicatorsRowLayout.realSpacing : 0

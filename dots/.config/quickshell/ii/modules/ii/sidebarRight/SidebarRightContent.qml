@@ -2,6 +2,7 @@ import qs
 import qs.services
 import qs.modules.common
 import qs.modules.common.widgets
+import qs.modules.common.functions
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -278,6 +279,15 @@ Item {
                 onClicked: root.editMode = !root.editMode
                 StyledToolTip {
                     text: Translation.tr("Edit quick toggles") + (root.editMode ? Translation.tr("\nLMB to enable/disable\nRMB to toggle size\nScroll to swap position") : "")
+                }
+            }
+            QuickToggleButton {
+                toggled: false
+                visible: Updates.count > 0
+                buttonIcon: "package_2"
+                onClicked: ExeUtils.runFloating("~/.config/custom/scripts/updates/install-system-updates.sh")
+                StyledToolTip {
+                    text: "Update Packages"
                 }
             }
             QuickToggleButton {

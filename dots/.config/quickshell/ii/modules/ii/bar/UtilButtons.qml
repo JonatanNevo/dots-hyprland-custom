@@ -156,46 +156,6 @@ Item {
         }
 
         Loader {
-            active: Config.options.bar.utilButtons.showPackages
-            visible: Config.options.bar.utilButtons.showPackages
-            sourceComponent: CircleUtilButton {
-                Layout.alignment: Qt.AlignVCenter
-                onClicked: ExeUtils.runFloating("~/.config/custom/scripts/updates/install-system-updates.sh")
-                overlayingItems: Rectangle {
-                    visible: Updates.count > 0
-                    anchors {
-                        right: parent.right
-                        top: parent.top
-                    }
-                    radius: Appearance.rounding.full
-                    color: Updates.severity === "red" ? Appearance.m3colors.m3error
-                         : Updates.severity === "yellow" ? Appearance.m3colors.m3tertiary
-                         : Appearance.m3colors.m3primary
-                    z: 1
-                    implicitHeight: Math.max(updateCountText.implicitWidth, updateCountText.implicitHeight)
-                    implicitWidth: implicitHeight
-
-                    StyledText {
-                        id: updateCountText
-                        anchors.centerIn: parent
-                        font.pixelSize: Appearance.font.pixelSize.smallest
-                        color: Updates.severity === "red" ? Appearance.m3colors.m3onError
-                             : Updates.severity === "yellow" ? Appearance.m3colors.m3onTertiary
-                             : Appearance.m3colors.m3onPrimary
-                        text: Updates.count
-                    }
-                }
-                MaterialSymbol {
-                    horizontalAlignment: Qt.AlignHCenter
-                    fill: 0
-                    text: "package_2"
-                    iconSize: Appearance.font.pixelSize.large
-                    color: Appearance.colors.colOnLayer2
-                }
-            }
-        }
-
-        Loader {
             active: Config.options.bar.utilButtons.showPerformanceProfileToggle
             visible: Config.options.bar.utilButtons.showPerformanceProfileToggle
             sourceComponent: CircleUtilButton {
