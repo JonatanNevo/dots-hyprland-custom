@@ -11,127 +11,151 @@
     {
       "type": "os",
       "key": " OS",
-      "keyColor": "yellow"
+      "keyColor": "yellow",
+      "timeout": 5
     },
     {
       "type": "kernel",
       "key": "├ Kernel",
-      "keyColor": "yellow"
+      "keyColor": "yellow",
+      "timeout": 5
     },
     {
       "type": "packages",
       "key": "├󰏖 Packages",
-      "keyColor": "yellow"
+      "keyColor": "yellow",
+      "timeout": 5
     },
     {
       "type": "shell",
       "key": "├ Shell",
-      "keyColor": "yellow"
+      "keyColor": "yellow",
+      "timeout": 5
     },
     {
       "type": "localIP",
       "key": "├󰩟 Local IP",
-      "keyColor": "yellow"
+      "keyColor": "yellow",
+      "timeout": 5
     },
     {
       "type": "publicIP",
       "key": "├󰩟 Public IP",
-      "keyColor": "yellow"
+      "keyColor": "yellow",
+      "timeout": 5
     },
     {
       "type": "uptime",
       "key": "└󰅐 Start Time",
-      "keyColor": "yellow"
+      "keyColor": "yellow",
+      "timeout": 5
     },
     "break",
     {
       "type": "custom",
       "key": " DE",
-      "keyColor": "blue"
+      "keyColor": "blue",
+      "timeout": 5
     },
     {
       "type": "wm",
       "key": "├󰧨 Window Manager",
-      "keyColor": "blue"
+      "keyColor": "blue",
+      "timeout": 5
     },
     {
       "type": "lm",
       "key": "├󰧨 Login Manager",
-      "keyColor": "blue"
+      "keyColor": "blue",
+      "timeout": 5
     },
     {
       "type": "wmtheme",
       "key": "├󰉼 WM Theme",
-      "keyColor": "blue"
+      "keyColor": "blue",
+      "timeout": 5
     },
     {
       "type": "theme",
       "key": "├󰉼 Color Themes",
-      "keyColor": "blue"
+      "keyColor": "blue",
+      "timeout": 5
     },
     {
       "type": "icons",
       "key": "├󰸉 System Icons",
-      "keyColor": "blue"
+      "keyColor": "blue",
+      "timeout": 5
     },
     {
       "type": "font",
       "key": "├ System Fonts",
-      "keyColor": "blue"
+      "keyColor": "blue",
+      "timeout": 5
     },
     {
       "type": "terminal",
       "key": "└ Terminal",
-      "keyColor": "blue"
+      "keyColor": "blue",
+      "timeout": 5
     },
     "break",
     {
       "type": "chassis",
       "key": "󰌢 PC",
-      "keyColor": "green"
+      "keyColor": "green",
+      "timeout": 5
     },
     {
       "type": "board",
       "key": "├ Board",
-      "keyColor": "green"
+      "keyColor": "green",
+      "timeout": 5
     },
     {
       "type": "cpu",
       "key": "├󰻠 CPU",
       "keyColor": "green",
       "temp": true,
-      "freqNdigits": 1
+      "freqNdigits": 1,
+      "timeout": 5
     },
     {
       "type": "memory",
       "key": "├󰑭 RAM",
-      "keyColor": "green"
+      "keyColor": "green",
+      "timeout": 5
     },
     {
       "type": "swap",
       "key": "├󰓡 Zram",
-      "keyColor": "green"
+      "keyColor": "green",
+      "timeout": 5
     },
     {
       "type": "disk",
       "key": "├ Disk",
-      "keyColor": "green"
+      "keyColor": "green",
+      "timeout": 5
     },
     {
       "type": "gpu",
       "key": "├󰍛 GPU",
-      "keyColor": "green"
+      "keyColor": "green",
+      "timeout": 5
     },
     {
       "type": "battery",
       "key": "├\uf240 Battery",
       "keyColor": "green",
-      "temp": true
+      "temp": true,
+      "timeout": 5
     },
     {
       "type": "display",
       "key": "└󰍹 Display(s)",
-      "keyColor": "green"
+      "keyColor": "green",
+      "timeout": 5
     }
   ]
 }
