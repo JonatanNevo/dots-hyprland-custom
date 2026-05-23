@@ -13,7 +13,7 @@
 
 INTERVAL="${1:-900}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SWITCHWALL="$SCRIPT_DIR/../switchwall.sh"
+SWITCHWALL="/home/jonatann/.config/quickshell/ii/scripts/colors/switchwall.sh"
 PIDFILE="/tmp/rotate_wallpaper.pid"
 LAST_WALL=""
 
@@ -64,7 +64,7 @@ pick_random() {
   local pick
   while true; do
     pick="${walls[$((RANDOM % count))]}"
-    if [[ "$pick" != "$LAST_WALL" ]]; then
+    if [[ "$(realpath -m "$pick")" != "$(realpath -m "$LAST_WALL")" ]]; then
       echo "$pick"
       return
     fi
@@ -78,8 +78,8 @@ if [[ -f "$SHELL_CONFIG" ]]; then
 fi
 
 while true; do
-  sleep "$INTERVAL"
   wall="$(pick_random)"
   LAST_WALL="$wall"
   "$SWITCHWALL" --image "$wall"
+  sleep "$INTERVAL"
 done
