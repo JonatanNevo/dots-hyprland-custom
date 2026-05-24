@@ -42,40 +42,33 @@ apply_kitty() {
   done
 
   # Reload
-  if ! pgrep -f kitty >/dev/null; then
-    return
+  if pids=$(pgrep -u "$USER" -x kitty 2>/dev/null) && [ -n "$pids" ]; then
+    kill -SIGUSR1 $pids
   fi
-  kill -SIGUSR1 $(pidof kitty)
 }
 
 apply_anyterm() {
-  # Check if terminal escape sequence template exists
-  if [ ! -f "$SCRIPT_DIR/terminal/sequences.txt" ]; then
-    echo "Template file not found for Terminal. Skipping that."
-    return
-  fi
-  # Copy template
-  mkdir -p "$STATE_DIR"/user/generated/terminal
-  cp "$SCRIPT_DIR/terminal/sequences.txt" "$STATE_DIR"/user/generated/terminal/sequences.txt
-  # Apply colors
+  [ -f "$SCRIPT_DIR/terminal/sequences.txt" ] || { echo "Template missing"; return; }
+  mkdir -p "$STATE_DIR/user/generated/terminal"
+  local seq="$STATE_DIR/user/generated/terminal/sequences.txt"
+  cp "$SCRIPT_DIR/terminal/sequences.txt" "$seq"
   for i in "${!colorlist[@]}"; do
-    sed -i "s/${colorlist[$i]} #/${colorvalues[$i]#\#}/g" "$STATE_DIR"/user/generated/terminal/sequences.txt
+    sed -i "s/${colorlist[$i]} #/${colorvalues[$i]#\#}/g" "$seq"
   done
+  sed -i "s/\$alpha/$term_alpha/g" "$seq"
 
-  sed -i "s/\$alpha/$term_alpha/g" "$STATE_DIR/user/generated/terminal/sequences.txt"
-
-  for file in /dev/pts/*; do
-    if [[ $file =~ ^/dev/pts/[0-9]+$ ]]; then
-      {
-      cat "$STATE_DIR"/user/generated/terminal/sequences.txt >"$file"
-      } & disown || true
-    fi
+  local me; me=$(id -u)
+  shopt -s nullglob
+  for file in /dev/pts/[0-9]*; do
+    [ "$(stat -c %u "$file" 2>/dev/null)" = "$me" ] || continue
+    timeout 1 dd if="$seq" of="$file" oflag=nonblock conv=notrunc status=none 2>/dev/null &
   done
+  wait
 }
 
 apply_term() {
-  apply_anyterm &
-  apply_kitty &
+  apply_anyterm
+  apply_kitty
 }
 
 # Check if terminal theming is enabled in config
@@ -83,11 +76,11 @@ CONFIG_FILE="$XDG_CONFIG_HOME/illogical-impulse/config.json"
 if [ -f "$CONFIG_FILE" ]; then
   enable_terminal=$(jq -r '.appearance.wallpaperTheming.enableTerminal' "$CONFIG_FILE")
   if [ "$enable_terminal" = "true" ]; then
-    apply_term &
+    apply_term; wait
   fi
 else
   echo "Config file not found at $CONFIG_FILE. Applying terminal theming by default."
-  apply_term &
+  apply_term; wait
 fi
 
 # apply_qt & # Qt theming is already handled by kde-material-colors

@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+# Sync tracked dotfiles from ~/ into this repo.
+# Uses `git ls-files` so ONLY paths already tracked in git are copied.
+# New local files are ignored; deletions in the local copy are ignored too.
+# Defaults to dry-run; pass --apply to actually write.
+
+set -euo pipefail
+
+REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+APPLY=0
+VERBOSE=0
+for arg in "$@"; do
+    case "$arg" in
+        --apply) APPLY=1 ;;
+        -v|--verbose) VERBOSE=1 ;;
+        -h|--help)
+            cat <<EOF
+Usage: $(basename "$0") [--apply] [-v|--verbose]
+
+  Copies tracked dotfiles from \$HOME back into this repo's dots/ tree.
+  Only files currently tracked by git are touched.
+
+  Without --apply, runs as a dry-run (no files written).
+EOF
+            exit 0
+            ;;
+        *)
+            echo "unknown arg: $arg" >&2
+            exit 2
+            ;;
+    esac
+done
+
+cd "$REPO_DIR"
+
+copied=0
+skipped_missing=0
+changed=0
+
+while IFS= read -r -d '' repo_rel; do
+    # repo_rel looks like: dots/.config/foo/bar.conf
+    case "$repo_rel" in
+        dots/*) ;;
+        *) continue ;;
+    esac
+
+    home_rel="${repo_rel#dots/}"
+    src="$HOME/$home_rel"
+    dst="$REPO_DIR/$repo_rel"
+
+    if [[ ! -e "$src" ]]; then
+        skipped_missing=$((skipped_missing + 1))
+        [[ $VERBOSE -eq 1 ]] && echo "skip (missing locally): $home_rel" >&2
+        continue
+    fi
+
+    if [[ -L "$src" ]]; then
+        # preserve symlinks as-is
+        if [[ $APPLY -eq 1 ]]; then
+            cp -a --remove-destination "$src" "$dst"
+        fi
+        [[ $VERBOSE -eq 1 ]] && echo "symlink: $home_rel"
+        copied=$((copied + 1))
+        continue
+    fi
+
+    if ! cmp -s "$src" "$dst" 2>/dev/null; then
+        changed=$((changed + 1))
+        echo "update: $home_rel"
+        if [[ $APPLY -eq 1 ]]; then
+            install -D -m "$(stat -c '%a' "$src")" "$src" "$dst"
+        fi
+    fi
+    copied=$((copied + 1))
+done < <(git ls-files -z -- 'dots/')
+
+echo
+echo "tracked files checked: $copied"
+echo "changed:               $changed"
+echo "missing locally:       $skipped_missing"
+
+if [[ $APPLY -eq 1 ]]; then
+    echo
+    echo "== git status =="
+    git -C "$REPO_DIR" status --short -- dots/
+else
+    echo
+    echo "Dry-run complete. Re-run with --apply to write changes."
+fi
