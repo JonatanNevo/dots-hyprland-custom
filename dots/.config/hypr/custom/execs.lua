@@ -1,7 +1,7 @@
 
 hl.on("hyprland.start", function ()
-    -- Wallpaper rotation (interval in seconds, default 900 = 15 min)
-    hl.exec_cmd("$HOME/.config/custom/scripts/rotate_wallpaper.sh 900")
+    -- Wallpaper rotation (interval in seconds, default 3600 = 60 min)
+    hl.exec_cmd("$HOME/.config/custom/scripts/rotate_wallpaper.sh 3600")
 
     -- Ollama
     hl.exec_cmd("ollama serve")
