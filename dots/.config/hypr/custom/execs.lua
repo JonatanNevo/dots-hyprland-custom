@@ -1,17 +1,17 @@
+hl.on("hyprland.start", function()
+	-- Wallpaper rotation (interval in seconds, default 3600 = 60 min)
+	hl.exec_cmd("$HOME/.config/custom/scripts/rotate_wallpaper.sh 3600")
 
-hl.on("hyprland.start", function ()
-    -- Wallpaper rotation (interval in seconds, default 3600 = 60 min)
-    hl.exec_cmd("$HOME/.config/custom/scripts/rotate_wallpaper.sh 3600")
+	-- Ollama
+	hl.exec_cmd("ollama serve")
 
-    -- Ollama
-    hl.exec_cmd("ollama serve")
+	-- Logitech Mouse
+	hl.exec_cmd("solaar --window=hide")
 
-    -- Logitech Mouse
-    hl.exec_cmd("solaar --window=hide")
+	-- kwallet
+	hl.exec_cmd("/usr/lib/pam_kwallet_init")
 
-    -- kwallet
-    hl.exec_cmd("/usr/lib/pam_kwallet_init")
-
-    -- Sunshine
-    hl.exec_cmd("/sunshine")
+	-- Sunshine
+	hl.exec_cmd("/sunshine")
 end)
+
